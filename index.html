@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Drone World — Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent:#00d4ff;
+      --dark1:#0b1320;
+      --card: rgba(255,255,255,0.06);
+      --glass: rgba(255,255,255,0.04);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Rubik", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:#e9f7fb;
+      min-height:100vh;
+      line-height:1.45;
+      background:linear-gradient(180deg, rgba(8,16,25,0.6), rgba(4,10,16,0.8));
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background-image: url('https://cdn.pixabay.com/photo/2018/04/04/18/09/drone-3293080_1280.jpg');
+      background-position:center;
+      background-size:cover;
+      background-repeat:no-repeat;
+      filter: blur(8px) brightness(0.45);
+      transform: scale(1.03);
+      z-index:-2;
+    }
+
+    body::after{
+      content:"";
+      position:fixed; inset:0;
+      background: linear-gradient(120deg, rgba(2,6,11,0.25), rgba(3,8,14,0.45));
+      z-index:-1;
+    }
+
+    header{padding:48px 20px 8px; text-align:center}
+    h1{
+      margin:0;
+      font-size: clamp(1.8rem, 3.8vw, 3rem);
+      letter-spacing: -0.02em;
+      color: white;
+      text-shadow: 0 6px 28px rgba(0,212,255,0.08), 0 2px 8px rgba(0,0,0,0.6);
+    }
+    p.lead{
+      margin:12px auto 0;
+      max-width:880px;
+      opacity:0.95;
+      font-weight:300;
+      color: #dff9ff;
+    }
+
+    main{max-width:1100px;margin:32px auto;padding:24px;display:grid;gap:22px;grid-template-columns: 1fr 380px; align-items:start;}
+    @media (max-width:980px){ main{grid-template-columns:1fr;padding:16px} }
+
+    .cards{
+      background:var(--card);
+      border-radius:16px;
+      padding:22px;
+      box-shadow: 0 10px 30px rgba(2,6,11,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(6px);
+    }
+    .cards h2{ margin:0 0 12px 0; color:var(--accent); font-size:1.2rem }
+    .bullets{
+      margin:0;padding-left:1.15rem;
+    }
+    .bullets li{
+      margin:14px 0;
+      font-size:1.05rem;
+      list-style-type: disc;
+      color: #e7fbff;
+    }
+    .bullets li strong{ color:#fff; font-weight:600 }
+
+    .aside{
+      background:var(--glass);
+      padding:18px;border-radius:12px;
+      box-shadow: 0 8px 20px rgba(2,6,11,0.5);
+    }
+    .navlinks{display:flex;flex-direction:column;gap:12px}
+    .navlinks a{
+      text-decoration:none;
+      display:block;
+      padding:12px 14px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      color: #eafcff;
+      font-weight:600;
+      transition: transform .18s ease, box-shadow .18s ease;
+      box-shadow: 0 4px 18px rgba(2,6,11,0.45);
+      text-align:center;
+    }
+    .navlinks a:hover{ transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,212,255,0.08) }
+
+    footer{max-width:1100px;margin:20px auto 60px;padding:0 24px;color:#9fdff6;opacity:0.9;font-size:0.95rem}
+
+    .underline{height:6px;width:72px;background:linear-gradient(90deg,var(--accent),#66e0ff);border-radius:6px;margin-top:14px;margin-bottom:8px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Drone World — Explore the Skies</h1>
+    <p class="lead">Everything UAV: photography, mapping, tech trends and inspiring aerial stories. Dive into crisp visuals, recent news, and quick guides for enthusiasts and pros.</p>
+  </header>
+
+  <main>
+    <section class="cards">
+      <h2>Why drones matter</h2>
+      <div class="underline" aria-hidden="true"></div>
+      <ul class="bullets">
+        <li><strong>New perspectives:</strong> Drones let us capture sweeping aerial photos and cinematic video previously available only to big productions.</li>
+        <li><strong>Precision work:</strong> In agriculture and surveying, drones collect fast, accurate data that saves time and money.</li>
+        <li><strong>Safety & reach:</strong> From inspections to search-and-rescue, drones access risky or remote places without endangering people.</li>
+        <li><strong>Rapid innovation:</strong> AI, improved batteries and smarter autopilots make drones more capable every year.</li>
+      </ul>
+      <p style="margin-top:18px; opacity:0.95">Check the <strong>Gallery</strong> for photos, <strong>About</strong> for background info, and <strong>News</strong> for recent developments.</p>
+    </section>
+
+    <aside class="aside">
+      <h3 style="margin:0 0 8px;color:var(--accent)">Quick Links</h3>
+      <nav class="navlinks" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="gallery.html">Gallery — Photos</a>
+        <a href="about.html">About Drones</a>
+        <a href="news.html">Drone News</a>
+      </nav>
+    </aside>
+  </main>
+</body>
+</html>
+
+
+  

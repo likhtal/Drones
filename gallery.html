@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Drone World — Gallery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Rubik",system-ui,Arial;background:#07101a;color:#e8faff;min-height:100vh}
+    body::before{
+      content:"";position:fixed;inset:0;
+      background-image: url('https://cdn.pixabay.com/photo/2017/08/06/00/27/drone-2585697_1280.jpg');
+      background-size:cover;background-position:center;
+      filter: blur(8px) brightness(0.45);
+      z-index:-2;
+    }
+    body::after{content:"";position:fixed;inset:0;background:linear-gradient(180deg, rgba(3,9,15,0.4), rgba(4,10,16,0.6));z-index:-1}
+
+    header{text-align:center;padding:28px 16px}
+    header h1{margin:0;font-size: clamp(1.6rem, 3.2vw, 2.4rem); color:#bff7ff}
+    .note{opacity:0.9;font-weight:300;margin-top:6px}
+
+    .wrap{max-width:1200px;margin:20px auto;padding:16px}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:10px;
+    }
+    @media (max-width:1000px){ .grid{grid-template-columns:repeat(3,1fr)} }
+    @media (max-width:700px){ .grid{grid-template-columns:repeat(2,1fr)} }
+
+    .frame{
+      width:100%;
+      height:0;padding-bottom:66.66%; /* 3:2 ratio */
+      position:relative;
+      overflow:hidden;
+      border-radius:6px;
+      background:transparent;
+    }
+    .frame img{
+      position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+      display:block;
+      transition: transform .45s cubic-bezier(.2,.9,.3,1), filter .3s;
+      filter: none; /* no border, clean look */
+    }
+    .frame:hover img{ transform: scale(1.06); }
+
+    .back{display:block; text-align:center; margin:20px auto; color:#bff7ff; text-decoration:none; font-weight:600; padding:10px 14px; background:rgba(255,255,255,0.04); border-radius:10px; width:fit-content}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Gallery — Drone Photos</h1>
+    <div class="note">16 borderless frames — paste your images to <code>images/photo1.jpg</code> … <code>images/photo16.jpg</code></div>
+  </header>
+
+  <div class="wrap">
+    <div class="grid">
+      <div class="frame"><img src="img\drones.jpg" alt="Photo 1"></div>
+      <div class="frame"><img src="img\fpv_drone1.jpg" alt="Photo 2"></div>
+      <div class="frame"><img src="img\fpv_drone2.jpg" alt="Photo 3"></div>
+      <div class="frame"><img src="img\fpv_drone3.jpg" alt="Photo 4"></div>
+
+      <div class="frame"><img src="img\Mini drone for entertainment1.jpg" alt="Photo 5"></div>
+      <div class="frame"><img src="img\Mini drone for entertainment3.jpg" alt="Photo 6"></div>
+      <div class="frame"><img src="img\Mini drone for entertainment3.jpg" alt="Photo 7"></div>
+      <div class="frame"><img src="img\photo_drone1.jpg" alt="Photo 9"></div>
+
+      <div class="frame"><img src="img\photo_drone2.jpg" alt="Photo 10"></div>
+      <div class="frame"><img src="img\photo_drone3.jpg" alt="Photo 11"></div>
+      <div class="frame"><img src="img\photo_drone4.jpg" alt="Photo 12"></div>
+
+      <div class="frame"><img src="img\promap_drone1.jpg" alt="Photo 13"></div>
+      <div class="frame"><img src="img\promap_drone2.jpg" alt="Photo 14"></div>
+      <div class="frame"><img src="img\promap_drone3.jpg" alt="Photo 15"></div>
+    </div>
+
+    <a class="back" href="index.html">⟵ Back to Home</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About Drones</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Inter",system-ui,Arial;background:#07121a;color:#e7fbff;min-height:100vh}
+    body::before{
+      content:"";position:fixed;inset:0;
+      background-image:url('https://cdn.pixabay.com/photo/2016/11/23/15/17/drone-1853298_1280.jpg');
+      background-size:cover;background-position:center;filter:blur(8px) brightness(0.46);z-index:-2;
+    }
+    body::after{content:"";position:fixed;inset:0;background:linear-gradient(180deg, rgba(2,6,11,0.4), rgba(4,9,14,0.6));z-index:-1}
+
+    .container{max-width:900px;margin:48px auto;padding:22px;background:rgba(255,255,255,0.03);border-radius:12px;}
+    h1{margin:0;color:#c9fbff}
+    .subtitle{color:#bfefff;margin-top:8px}
+    section{margin-top:18px;color:#e6fbff;line-height:1.7;font-size:1.03rem}
+    a.source{color: #9ae9ff; text-decoration: none; font-weight:600}
+    .back{display:inline-block;margin-top:18px;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,0.03);color:#dffeff;text-decoration:none}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>About Drones (UAVs)</h1>
+    <div class="subtitle">A quick overview of unmanned aerial vehicles and their uses</div>
+
+    <section>
+      <p><strong>Definition:</strong> A drone, or unmanned aerial vehicle (UAV), is an aircraft without a human pilot on board. Drones can be remotely controlled or fly autonomously using onboard computers and sensors.</p>
+
+      <p><strong>History & development:</strong> Initially developed for military and reconnaissance roles, drones have rapidly expanded into civilian fields thanks to cheaper components, improved batteries, and smarter software. Modern drones range from tiny hobby quadcopters to large systems used for surveying and delivery.</p>
+
+      <p><strong>Common uses:</strong> aerial photography and filmmaking, surveying and mapping, agriculture (crop monitoring), infrastructure inspection (bridges, towers), search & rescue, and delivery trials. Drones help collect data faster and more safely in many industries.</p>
+
+      <p><strong>Safety & regulation:</strong> As drones became widespread, aviation authorities introduced rules to ensure safety and privacy—these vary by country (e.g., registration, flight altitude limits, no-fly zones).</p>
+
+      <p>For a deeper dive see the Wikipedia article on <a class="source" href="https://en.wikipedia.org/wiki/Unmanned_aerial_vehicle" target="_blank" rel="noopener noreferrer">Unmanned Aerial Vehicle (UAV)</a>.</p>
+
+      <a class="back" href="index.html">⟵ Back to Home</a>
+    </section>
+  </div>
+</body>
+</html>
+

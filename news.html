@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Drone World — News</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Rubik",system-ui,Arial;background:#071421;color:#e6fbff;min-height:100vh}
+    /* blurred drone header image */
+    .hero{
+      height:200px;background-image:url('https://cdn.pixabay.com/photo/2018/06/20/19/49/drone-3481426_1280.jpg');
+      background-size:cover;background-position:center;filter:blur(6px) brightness(0.55);
+      position:relative;
+    }
+    .hero h1{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:#eaffff;margin:0;font-size:clamp(1.6rem,3.2vw,2.2rem)}
+    .wrap{max-width:980px;margin:-60px auto 60px;padding:18px}
+    .card{background:rgba(255,255,255,0.03);padding:16px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.5);margin-bottom:12px}
+    .card a{color:#c8f7ff;text-decoration:none;font-weight:600}
+    .card p{margin:8px 0 0;color:#e6fbff;opacity:0.95}
+    .section-title{color:#9cf2ff;margin:18px 0 8px;font-weight:600}
+    .back{display:inline-block;margin-top:8px;color:#bff8ff;text-decoration:none;padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="hero" aria-hidden="true"><h1>Drone News & Channels</h1></div>
+
+  <main class="wrap">
+    <div>
+      <div class="section-title">News Websites</div>
+
+      <div class="card">
+        <a href="https://dronelife.com" target="_blank" rel="noopener noreferrer">DroneLife</a>
+        <p>Industry news, product announcements, and analyses focused on commercial and consumer drones.</p>
+      </div>
+
+      <div class="card">
+        <a href="https://dronedj.com" target="_blank" rel="noopener noreferrer">DroneDJ</a>
+        <p>Fast updates on drone releases, regulations, and company news in the UAV sector.</p>
+      </div>
+
+      <div class="card">
+        <a href="https://www.uavcoach.com" target="_blank" rel="noopener noreferrer">UAV Coach</a>
+        <p>Resources for pilots, training guides, and drone-industry reports.</p>
+      </div>
+
+      <div class="card">
+        <a href="https://www.thedronegirl.com" target="_blank" rel="noopener noreferrer">The Drone Girl</a>
+        <p>Independent blog with accessible news, reviews, and tips for drone users.</p>
+      </div>
+
+      <div class="section-title">YouTube Channels & Video Resources</div>
+
+      <div class="card">
+        <a href="https://www.youtube.com/c/UAVCoach" target="_blank" rel="noopener noreferrer">UAV Coach (YouTube)</a>
+        <p>Tutorials, industry interviews, and drone flight tips.</p>
+      </div>
+
+      <div class="card">
+        <a href="https://www.youtube.com/user/FliteTest" target="_blank" rel="noopener noreferrer">Flite Test</a>
+        <p>RC/drones community channel: entertaining builds, flights and reviews.</p>
+      </div>
+
+      <div class="card">
+        <a href="https://www.youtube.com/c/DJI" target="_blank" rel="noopener noreferrer">DJI Official (YouTube)</a>
+        <p>Product videos and official announcements from one of the leading drone manufacturers.</p>
+      </div>
+
+      <div class="card">
+        <a href="https://www.youtube.com/c/MavicPilots" target="_blank" rel="noopener noreferrer">Mavic Pilots / Community</a>
+        <p>Community videos & tips focused on popular consumer drones (forum-related video channels).</p>
+      </div>
+
+      <div style="margin-top:18px">
+        <a class="back" href="index.html">⟵ Back to Home</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
