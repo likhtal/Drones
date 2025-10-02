@@ -127,7 +127,7 @@
       <h3 style="margin:0 0 8px;color:var(--accent)">Quick Links</h3>
       <nav class="navlinks" aria-label="Main navigation">
         <a href="index.html">Home</a>
-        <a href="gallery.html">Gallery — Photos</a>
+        <a href="gallery.html">Gallery â€” Photos</a>
         <a href="about.html">About Drones</a>
         <a href="news.html">Drone News</a>
         <a href="map.html">Map</a>
@@ -142,23 +142,45 @@
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-    const marker = L.marker([50.450001, 30.523333]).addTo(map);    
-    marker.bindPopup("Kyiv: a marker created by Andrew & AL").openPopup();   
+   //const circle = L.circle([50.450001, 30.523333], {
+   //  color: 'red',
+   //  fillColor: '#f03',
+   //  fillOpacity: 0.5,
+   //  radius: 500
+   //}).addTo(map);
 
-    const circle = L.circle([50.450001, 30.523333], {
-      color: 'red',
-      fillColor: '#f03',
-      fillOpacity: 0.5,
-      radius: 500
-   }).addTo(map);
+   //const popup = L.popup();
+   //marker.bindPopup("Kyiv: a marker created by Andrew & AL").openPopup();   
 
-   var popup = L.popup();
+   let startMarker;
+   let endMarker;
+   let points = [];
+   let droneLine; 
 
    function onMapClick(e) {
-      popup
-        .setLatLng(e.latlng)
-        .setContent("You clicked the map at " + e.latlng.toString())
-        .openOn(map);
+      if (points.length >= 2) {
+         map.removeLayer(startMarker);
+         map.removeLayer(endMarker);
+         map.removeLayer(droneLine);
+         points = [];
+      }
+
+      points[points.length] = e.latlng; 
+
+      if (points.length == 1) {
+         startMarker = L.marker(e.latlng).addTo(map);    
+      }
+
+      if (points.length == 2) {
+         endMarker = L.marker(e.latlng).addTo(map);    
+         droneLine = L.polyline(points, {color: 'red'}).addTo(map);
+         map.fitBounds(droneLine.getBounds());
+      }
+
+      // popup
+      //  .setLatLng(e.latlng)
+      //  .setContent("You clicked the map at " + e.latlng.toString())
+      //  .openOn(map);
    }
 
     map.on('click', onMapClick);
