@@ -135,6 +135,26 @@
     </aside>
   </main>
   <script>
+  function haversineDistance(lat1, lon1, lat2, lon2) {
+    R = 6371;
+    toRad = deg => deg * Math.PI / 180;
+    
+    lon1_rad = toRad(lon1);
+    lat1_rad = toRad(lat1);
+    lon2_rad = toRad(lon2);
+    lat2_rad = toRad(lat2);
+    
+    dlon = lon1_rad - lon2_rad;
+    dlat = lat1_rad - lat2_rad;
+    
+    a = Math.sin(dlat / 2)**2 + Math.cos(lat1_rad)*Math.cos(lat2_rad)*Math.sin(dlon / 2)**2;
+    c = 2*Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R*c;
+}
+  </script>
+
+  <script>
+    const LIMIT = 1500;
     const map = L.map('map').setView([50.450001, 30.523333], 6);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -154,16 +174,28 @@
 
    let startMarker;
    let endMarker;
+   let explosionMarker;
    let points = [];
    let droneLine; 
 
    const droneIcon = L.icon({
        iconUrl: 'img/drone-icon.png',
-       //shadowUrl: 'leaf-shadow.png',
+       shadowUrl: 'img/drone-shadow.png',
    
        iconSize:     [95, 38], // size of the icon
-       //shadowSize:   [50, 64], // size of the shadow
+       shadowSize:   [95, 38], // size of the shadow
        iconAnchor:   [48, 19], // point of the icon which will correspond to marker's location
+       shadowAnchor: [30, 9],  // the same for the shadow
+       popupAnchor:  [-76, -3] // point from which the popup should open relative to the iconAnchor
+   });
+
+   const explosionIcon = L.icon({
+       iconUrl: 'img/explosion.png',
+       //shadowUrl: 'leaf-shadow.png',
+   
+       iconSize:     [96, 96], // size of the icon
+       //shadowSize:   [50, 64], // size of the shadow
+       iconAnchor:   [48, 48], // point of the icon which will correspond to marker's location
        //shadowAnchor: [4, 62],  // the same for the shadow
        popupAnchor:  [-76, -3] // point from which the popup should open relative to the iconAnchor
    });
@@ -177,26 +209,46 @@
          map.removeLayer(startMarker);
          map.removeLayer(endMarker);
          map.removeLayer(droneLine);
+         map.removeLayer(explosionMarker);
          points = [];
       }
 
       points[points.length] = e.latlng; 
 
-      if (points.length == 1) {
+      if (points.length == 1) {    // 1st click
          startMarker = L.marker(e.latlng, {icon: droneIcon}).addTo(map);    
       }
 
-      if (points.length == 2) {
+      if (points.length == 2) {     // 2nd click
          endMarker = L.marker(e.latlng).addTo(map);    
          droneLine = L.polyline(points, {color: 'red'}).addTo(map);
          map.fitBounds(droneLine.getBounds());
 
+         // const { name: fullName, occupation: jobTitle, city = "Unknown"  } = { name: "Bob", occupation: "Engineer" };
+         const {lat: lat1, lng: lng1} = startMarker._latlng;
+         const {lat: lat2, lng: lng2} = endMarker._latlng;
 
-         let lat1 = startMarker._latlng.lat;
-         let lng1 = startMarker._latlng.lng;
+         // let lat1 = startMarker._latlng.lat;
+         // let lng1 = startMarker._latlng.lng;
 
-         let lat2 = endMarker._latlng.lat;
-         let lng2 = endMarker._latlng.lng;
+         // let lat2 = endMarker._latlng.lat;
+         // let lng2 = endMarker._latlng.lng;
+
+         if (haversineDistance(lat1, lng1, lat2, lng2) > LIMIT) {
+            alert("The distance is too long!"); 
+
+            if (!!startMarker) {  // "empty" -> false, "non empty" -> true
+               map.removeLayer(startMarker);
+            }
+            if (!!endMarker) {
+               map.removeLayer(endMarker);
+            }
+            if (!!droneLine) {
+               map.removeLayer(droneLine);
+            }
+
+            return;
+         }
 
          let droneMarker;
 
@@ -219,6 +271,14 @@
          if (!!droneMarker) {
             map.removeLayer(droneMarker);
          }
+         if (!!endMarker) {
+            map.removeLayer(endMarker);
+         }
+         if (!!droneLine) {
+            map.removeLayer(droneLine);
+         }
+         // TODO: explosion!!!
+         explosionMarker = L.marker(e.latlng, {icon: explosionIcon}).addTo(map);    
       }
 
       // popup
