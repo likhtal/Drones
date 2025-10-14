@@ -106,7 +106,19 @@
     footer{max-width:1100px;margin:20px auto 60px;padding:0 24px;color:#9fdff6;opacity:0.9;font-size:0.95rem}
 
     .underline{height:6px;width:72px;background:linear-gradient(90deg,var(--accent),#66e0ff);border-radius:6px;margin-top:14px;margin-bottom:8px}
-    #map { height: 356px; }
+    #map { height: 356px;
+        border: 6px solid #444;  
+  	border-radius: 20px;
+  	box-shadow: 0 8px 20px rgba(0,0,0,1);
+  	max-width: 800px;
+	 }
+      #select-drones {
+        margin: 20px 10px;
+        width: 200px;
+      }
+      #select-drones-label {
+        font-size: 14px;
+      }
   </style>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
@@ -121,6 +133,11 @@
   <main>
     <section class="map">
        <div id="map"></div>
+       <label for="select-drones" id="select-drones-label">Choose a drone:</label>
+       <select name="select-drones" id="select-drones">
+         <option value="1">Drone #1</option>
+         <option value="2">Drone #2</option>
+       </select>
     </section>
 
     <aside class="aside">
@@ -134,27 +151,9 @@
       </nav>
     </aside>
   </main>
-  <script>
-  function haversineDistance(lat1, lon1, lat2, lon2) {
-    R = 6371;
-    toRad = deg => deg * Math.PI / 180;
-    
-    lon1_rad = toRad(lon1);
-    lat1_rad = toRad(lat1);
-    lon2_rad = toRad(lon2);
-    lat2_rad = toRad(lat2);
-    
-    dlon = lon1_rad - lon2_rad;
-    dlat = lat1_rad - lat2_rad;
-    
-    a = Math.sin(dlat / 2)**2 + Math.cos(lat1_rad)*Math.cos(lat2_rad)*Math.sin(dlon / 2)**2;
-    c = 2*Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R*c;
-}
-  </script>
+  <script src="js/util.js"></script>
 
   <script>
-    const LIMIT = 1500;
     const map = L.map('map').setView([50.450001, 30.523333], 6);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -171,15 +170,29 @@
 
    //const popup = L.popup();
    //marker.bindPopup("Kyiv: a marker created by Andrew & AL").openPopup();   
+   const Limits = {1: 1500, 2: 500};
 
    let startMarker;
    let endMarker;
    let explosionMarker;
    let points = [];
    let droneLine; 
+   let droneNum; 
+   let droneIcon;
 
-   const droneIcon = L.icon({
-       iconUrl: 'img/drone-icon.png',
+   const droneIcon1 = L.icon({
+       iconUrl: 'img/drone-icon1.png',
+       shadowUrl: 'img/drone-shadow.png',
+   
+       iconSize:     [95, 38], // size of the icon
+       shadowSize:   [95, 38], // size of the shadow
+       iconAnchor:   [48, 19], // point of the icon which will correspond to marker's location
+       shadowAnchor: [30, 9],  // the same for the shadow
+       popupAnchor:  [-76, -3] // point from which the popup should open relative to the iconAnchor
+   });
+
+   const droneIcon2 = L.icon({
+       iconUrl: 'img/drone-icon2.png',
        shadowUrl: 'img/drone-shadow.png',
    
        iconSize:     [95, 38], // size of the icon
@@ -200,11 +213,8 @@
        popupAnchor:  [-76, -3] // point from which the popup should open relative to the iconAnchor
    });
 
-   function delay(timeInMs) {
-     return new Promise(resolve => setTimeout(resolve, timeInMs));
-   }
-
    async function onMapClick(e) {
+
       if (points.length >= 2) {
          map.removeLayer(startMarker);
          map.removeLayer(endMarker);
@@ -216,6 +226,12 @@
       points[points.length] = e.latlng; 
 
       if (points.length == 1) {    // 1st click
+         droneNum = document.getElementById("select-drones").value;
+         if (droneNum == 2) {
+           droneIcon = droneIcon2;
+         } else {
+           droneIcon = droneIcon1;
+         }
          startMarker = L.marker(e.latlng, {icon: droneIcon}).addTo(map);    
       }
 
@@ -228,13 +244,7 @@
          const {lat: lat1, lng: lng1} = startMarker._latlng;
          const {lat: lat2, lng: lng2} = endMarker._latlng;
 
-         // let lat1 = startMarker._latlng.lat;
-         // let lng1 = startMarker._latlng.lng;
-
-         // let lat2 = endMarker._latlng.lat;
-         // let lng2 = endMarker._latlng.lng;
-
-         if (haversineDistance(lat1, lng1, lat2, lng2) > LIMIT) {
+         if (haversineDistance(lat1, lng1, lat2, lng2) > Limits[droneNum]) {
             alert("The distance is too long!"); 
 
             if (!!startMarker) {  // "empty" -> false, "non empty" -> true
