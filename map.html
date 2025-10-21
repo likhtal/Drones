@@ -28,6 +28,8 @@
          <option value="1">Drone #1</option>
          <option value="2">Drone #2</option>
        </select>
+       <button id="clear">Clear</button>
+       <button id="launch">Launch</button>
     </section>
 
     <aside class="aside">
@@ -52,33 +54,42 @@
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-   const State = {points: []};
+   const State = {points: [], markers: []};
+
+   const clrBtn = document.getElementById("clear");
+   const launchBtn = document.getElementById("launch");
+
+   clrBtn.addEventListener("click", function() {
+      cleanUp();
+   });   
+
+   launchBtn.addEventListener("click", async function() {
+      await launch();
+   });   
 
    function cleanUp() {
-      if (!!State.startMarker) {  
-         map.removeLayer(State.startMarker);
+      for (let i = 0; i < State.markers.length; i++) {
+         map.removeLayer(State.markers[i]);
       }
-      if (!!State.endMarker) {
-         map.removeLayer(State.endMarker);
-      }
+
       if (!!State.droneLine) {
          map.removeLayer(State.droneLine);
       }
       if (!!State.explosionMarker) {
          map.removeLayer(State.explosionMarker);
       }
+
       State.points = [];
-      State.startMarker = null;
-      State.endMarker = null;
+      State.markers = [];
       State.explosionMarker = null;
       State.droneLine = null; 
       State.droneNum = null; 
       State.droneIcon = null;
    }
-   
-   async function fly() {
-      const {lat: lat1, lng: lng1} = State.startMarker._latlng;
-      const {lat: lat2, lng: lng2} = State.endMarker._latlng;
+
+   async function fly(st, en) {
+      const {lat: lat1, lng: lng1} = st._latlng;
+      const {lat: lat2, lng: lng2} = en._latlng;
 
       let droneMarker;
 
@@ -98,52 +109,58 @@
          map.removeLayer(droneMarker);
       }
    }
+   
+   async function launch() {
+      map.fitBounds(State.droneLine.getBounds());
 
-   async function onMapClick(e) {
-
-      if (State.points.length >= 2) {
+      // let's check the distance 
+      if (routeDistance(State.points) > LIMITS[State.droneNum]) {
+         alert("The distance is too long!"); 
          cleanUp();
+         return;
       }
 
+      // start moving the drone
+      if (!!State.markers[0]) {
+         map.removeLayer(State.markers[0]);
+      }
+
+      for (let i = 0; i < State.markers.length-1; i++) {
+         await fly(State.markers[i], State.markers[i+1]);     
+      }
+
+
+      const en = State.points[State.points.length-1];
+
+      cleanUp();
+
+      // Let's explode
+      State.explosionMarker = L.marker(en, {icon: EXPLOSION_ICON}).addTo(map);    
+   }  
+
+   async function onMapClick(e) {
       State.points[State.points.length] = e.latlng; 
 
-      if (State.points.length == 1) {    // 1st click
+      if (State.points.length == 1) {  // 1st click
          State.droneNum = document.getElementById("select-drones").value;
+      
          if (State.droneNum == 2) {
            State.droneIcon = DRONE_ICON2;
          } else {
            State.droneIcon = DRONE_ICON1;
          }
-         State.startMarker = L.marker(e.latlng, {icon: State.droneIcon}).addTo(map);    
+
+         State.markers[State.markers.length] = L.marker(e.latlng, {icon: State.droneIcon}).addTo(map);    
+
+      } else {
+         State.markers[State.markers.length] = L.marker(e.latlng).addTo(map);    
       }
 
-      if (State.points.length == 2) {     // 2nd click
-
-         State.endMarker = L.marker(e.latlng).addTo(map);    
-         State.droneLine = L.polyline(State.points, {color: 'red'}).addTo(map);
-         map.fitBounds(State.droneLine.getBounds());
-
-         const {lat: lat1, lng: lng1} = State.startMarker._latlng;
-         const {lat: lat2, lng: lng2} = State.endMarker._latlng;
-
-         // let's check the distance 
-         if (haversineDistance(lat1, lng1, lat2, lng2) > LIMITS[State.droneNum]) {
-            alert("The distance is too long!"); 
-            cleanUp();
-            return;
-         }
-
-         // start moving the drone
-         if (!!State.startMarker) {
-            map.removeLayer(State.startMarker);
-         }
-
-         await fly();     
-
-         cleanUp();
-         // Let's explode
-         State.explosionMarker = L.marker(e.latlng, {icon: EXPLOSION_ICON}).addTo(map);    
+      if (!!State.droneLine) {
+         map.removeLayer(State.droneLine);
       }
+
+      State.droneLine = L.polyline(State.points, {color: 'red'}).addTo(map);
    }
 
     map.on('click', onMapClick);

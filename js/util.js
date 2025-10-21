@@ -17,10 +17,11 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
 
 function routeDistance(points) {   
   let t = 0;
+
   for (let i = 0; i < points.length - 1; i++) {
-    [lat1, lon1] = points[i];
-    [lat2, lon2] = points[i + 1];
-    t += haversineDistance(lat1, lon1, lat2, lon2);
+     const {lat: lat1, lng: lng1} = points[i];
+     const {lat: lat2, lng: lng2} = points[i+1];
+     t += haversineDistance(lat1, lng1, lat2, lng2);
   }
 
   return t;
