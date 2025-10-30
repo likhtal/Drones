@@ -1,8 +1,12 @@
+const DELAY = 10;
+
+const COLOR = "#880808"
+
 const LIMITS = {1: 1500, 2: 500};
 
 const DRONE_ICON1 = L.icon({
     iconUrl: 'img/drone-icon1.png',
-    shadowUrl: 'img/drone-shadow.png',
+    shadowUrl: 'img/drone1-shadow.png',
 
     iconSize:     [95, 38], // size of the icon
     shadowSize:   [95, 38], // size of the shadow
@@ -13,7 +17,7 @@ const DRONE_ICON1 = L.icon({
 
 const DRONE_ICON2 = L.icon({
     iconUrl: 'img/drone-icon2.png',
-    shadowUrl: 'img/drone-shadow.png',
+    shadowUrl: 'img/drone2-shadow.png',
 
     iconSize:     [95, 38], // size of the icon
     shadowSize:   [95, 38], // size of the shadow

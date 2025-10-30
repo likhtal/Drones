@@ -88,17 +88,18 @@
    }
 
    async function fly(st, en) {
-      const {lat: lat1, lng: lng1} = st._latlng;
-      const {lat: lat2, lng: lng2} = en._latlng;
+      const {lat: lat1, lng: lng1} = st;
+      const {lat: lat2, lng: lng2} = en;
 
       let droneMarker;
+      const Sep = 10;
 
       // w varies from 0 to 1
-      for (let i=0; i < 100; i++) {  
-          let w = i/100;
+      for (let i=0; i < Sep; i++) {  
+          let w = i/Sep;
           let lat = lat1*(1-w) + lat2*w;
           let lng = lng1*(1-w) + lng2*w;
-          await delay(DELAY);
+          await delay(20);
           if (!!droneMarker) {
              map.removeLayer(droneMarker);
           }
@@ -125,8 +126,8 @@
          map.removeLayer(State.markers[0]);
       }
 
-      for (let i = 0; i < State.markers.length-1; i++) {
-         await fly(State.markers[i], State.markers[i+1]);     
+      for (let i = 0; i < State.points.length-1; i++) {
+         await fly(State.points[i], State.points[i+1]);     
       }
 
 
@@ -138,26 +139,23 @@
       State.explosionMarker = L.marker(en, {icon: EXPLOSION_ICON}).addTo(map);    
    }  
 
+   function getDrone() {
+      State.droneNum = document.getElementById("select-drones").value;
+      
+      if (State.droneNum == 2) {
+        State.droneIcon = DRONE_ICON2;
+      } else {
+        State.droneIcon = DRONE_ICON1;
+      }
+   }
+
    async function onMapClick(e) {
       State.points[State.points.length] = e.latlng; 
 
       if (State.points.length == 1) {  // 1st click
-         State.droneNum = document.getElementById("select-drones").value;
-      
-         if (State.droneNum == 2) {
-           State.droneIcon = DRONE_ICON2;
-         } else {
-           State.droneIcon = DRONE_ICON1;
-         }
-
+         getDrone();
          State.markers[State.markers.length] = L.marker(e.latlng, {icon: State.droneIcon}).addTo(map);    
-
       } else {
-
-         for (let i = 1; i < State.markers.length; i++) {
-           map.removeLayer(State.markers[i]);
-         }
-
          State.markers[State.markers.length] = L.marker(e.latlng).addTo(map);    
       }
 
@@ -165,10 +163,50 @@
          map.removeLayer(State.droneLine);
       }
 
-      State.droneLine = L.polyline(State.points, {color: COLOR}).addTo(map);
+      State.droneLine = L.polyline(State.points, {color: 'red'}).addTo(map);
    }
 
-    map.on('click', onMapClick);
+   let isOnMove = false;
+
+   async function onMapDown(e) {
+      isOnMove = true;
+      map.dragging.disable();
+      getDrone();
+      State.markers[State.markers.length] = L.marker(e.latlng, {icon: State.droneIcon}).addTo(map);    
+      State.points[State.points.length] = e.latlng; 
+   }
+
+   async function onMapMove(e) {
+      if (isOnMove) {
+         State.points[State.points.length] = e.latlng; 
+
+         if (!!State.droneLine) {
+            map.removeLayer(State.droneLine);
+         }
+
+         State.droneLine = L.polyline(State.points, {color: 'red'}).addTo(map);
+      }
+   }
+
+   async function onMapUp(e) {
+      if (isOnMove) {
+         State.points[State.points.length] = e.latlng; 
+         isOnMove = false;
+
+         if (!!State.droneLine) {
+            map.removeLayer(State.droneLine);
+         }
+
+         State.droneLine = L.polyline(State.points, {color: 'red'}).addTo(map);
+         map.dragging.enable();
+      }
+   }
+
+   //map.on('click', onMapClick);
+   map.on('mousedown', onMapDown);
+   map.on('mousemove', onMapMove);
+   map.on('mouseup', onMapUp);
+
   </script>
 </body>
 </html>
