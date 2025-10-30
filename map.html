@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Drone World — Map</title>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
      crossorigin=""/>
@@ -13,6 +14,9 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
+
+  <script src="https://unpkg.com/leaflet-ajax@2.1.0/dist/leaflet.ajax.js"></script>
+
 </head>
 <body>
   <header>
@@ -50,9 +54,25 @@
     const map = L.map('map').setView([50.450001, 30.523333], 6);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+       maxZoom: 19,
+       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+   }).addTo(map);
+
+   const geojsonLayer = new L.GeoJSON.AJAX("https://geowebservices.stanford.edu/geoserver/wfs?service=WFS&" +
+       "version=1.1.0&request=GetFeature&typename=druid:nv937bq8361&" +
+       "outputFormat=application/json&srsname=EPSG:4326", {
+       onEachFeature: function (feature, layer) {
+           //var popupContent = '';
+           //for (var key in feature.properties) {
+           //    popupContent += key + ': ' + feature.properties[key] + '<br>';
+           //}
+           //layer.bindPopup(popupContent);
+       }
+   }).addTo(map);
+
+   //geojsonLayer.on('data:loaded', function () {
+   //    map.fitBounds(geojsonLayer.getBounds());
+   //});
 
    const State = {points: [], markers: []};
 
