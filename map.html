@@ -10,7 +10,9 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
      crossorigin=""/>
-  <link rel="stylesheet" href="css/map.css" />
+
+  <link rel="stylesheet" type="text/css" href="css/map.css" />
+  <link rel="stylesheet" type="text/css" href="css/dynamicSelect.css" >
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
@@ -30,10 +32,12 @@
     <section class="map">
        <div id="map"></div>
        <label for="select-drones" id="select-drones-label">Choose a drone:</label>
-       <select name="select-drones" id="select-drones">
-         <option value="1">Drone #1</option>
-         <option value="2">Drone #2</option>
+
+       <select name="select-drones" id="select-drones" data-placeholder="Select a drone" data-dynamic-select>
+         <option value="1" data-img="img/drone-icon1.png">Drone #1</option>
+         <option value="2" data-img="img/drone-icon2.png">Drone #2</option>
        </select>
+
        <button id="clear">Clear</button>
        <button id="launch">Launch</button>
        <button id="undo">Undo</button>
@@ -242,6 +246,8 @@
 
     map.on('click', onMapClick);
   </script>
+  <script src="js/dynamicSelect.js"></script>
+
 </body>
 </html>
 
