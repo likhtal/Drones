@@ -163,11 +163,12 @@ footer {
 	border-radius: 20px;
 	box-shadow: 0 8px 20px rgba(0, 0, 0, 1);
 	max-width: 800px;
+        margin-bottom: 15px;
 }
 
 #select-drones {
 	margin: 20px 10px;
-	width: 200px;
+	width: 300px;
 }
 
 #select-drones-label {
@@ -184,7 +185,18 @@ footer {
   transition: transform .12s ease, box-shadow .12s ease;
   color: #062027;
 }
+
 #launch { background: linear-gradient(180deg, var(--accent), #66e0ff); }
 #clear  { background: rgba(255,255,255,0.06); color:#eafcff; }
 #undo   { background: transparent; color:var(--accent); border:1px solid rgba(0,212,255,0.18); }
+
 .map button:hover { transform: translateY(-3px); }
+
+#clear, #launch, #undo {
+  float:right;
+}
+
+#select-drones-label {
+  margin-left: 16px;
+}
+
