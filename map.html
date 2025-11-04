@@ -70,9 +70,9 @@
        }
    }).addTo(map);
 
-   //geojsonLayer.on('data:loaded', function () {
-   //    map.fitBounds(geojsonLayer.getBounds());
-   //});
+   geojsonLayer.on('data:loaded', function () {
+       map.fitBounds(geojsonLayer.getBounds());
+   });
 
    const State = {points: [], markers: []};
 
@@ -156,6 +156,7 @@
 
       // Let's explode
       State.explosionMarker = L.marker(en, {icon: EXPLOSION_ICON}).addTo(map);    
+      map.setView(en, 10);
    }  
 
    async function onMapClick(e) {
