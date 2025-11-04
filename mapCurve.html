@@ -30,6 +30,8 @@
        </select>
        <button id="clear">Clear</button>
        <button id="launch">Launch</button>
+	<button id="undo">Undo</button>
+
     </section>
 
     <aside class="aside">
@@ -201,6 +203,34 @@
          map.dragging.enable();
       }
    }
+  async function undo() {
+    if (State.explosionMarker) {
+      map.removeLayer(State.explosionMarker);
+      State.explosionMarker = null;
+      return;
+    }
+
+    if (State.markers.length > 0) {
+      const lastMarker = State.markers.pop();
+      if (lastMarker) map.removeLayer(lastMarker);
+    }
+
+    if (State.points.length > 0) {
+      State.points.pop();
+    }
+
+    if (State.droneLine) {
+      map.removeLayer(State.droneLine);
+      State.droneLine = null;
+    }
+
+    if (State.points.length > 0) {
+      State.droneLine = L.polyline(State.points, {color: 'red'}).addTo(map);
+    } else {
+      State.droneNum = null;
+      State.droneIcon = null;
+    }
+
 
    //map.on('click', onMapClick);
    map.on('mousedown', onMapDown);

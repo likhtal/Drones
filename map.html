@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Drone World — Map</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -16,6 +17,7 @@
      crossorigin=""></script>
 
   <script src="https://unpkg.com/leaflet-ajax@2.1.0/dist/leaflet.ajax.js"></script>
+  <script src="https://cdn.rawgit.com/hayeswise/Leaflet.PointInPolygon/v1.0.0/wise-leaflet-pip.js"></script>
 
 </head>
 <body>
@@ -34,6 +36,7 @@
        </select>
        <button id="clear">Clear</button>
        <button id="launch">Launch</button>
+       <button id="undo">Undo</button>
     </section>
 
     <aside class="aside">
@@ -78,6 +81,7 @@
 
    const clrBtn = document.getElementById("clear");
    const launchBtn = document.getElementById("launch");
+   const undoBtn = document.getElementById("undo");
 
    clrBtn.addEventListener("click", function() {
       cleanUp();
@@ -85,6 +89,10 @@
 
    launchBtn.addEventListener("click", async function() {
       await launch();
+   });   
+
+   undoBtn.addEventListener("click", async function() {
+      await undo();
    });   
 
    function cleanUp() {
@@ -163,6 +171,15 @@
       State.points[State.points.length] = e.latlng; 
 
       if (State.points.length == 1) {  // 1st click
+
+         // geojsonLayer.eachLayer(function(memberLayer) {
+         //   console.log(memberLayer.feature.properties);
+         //
+         //   if (!memberLayer.contains(e.latlng)) {
+         //      alert("Warning: the point is outside of the Ukrainian boundary!");
+         //   }
+         // });
+
          State.droneNum = document.getElementById("select-drones").value;
       
          if (State.droneNum == 2) {
@@ -187,6 +204,40 @@
       }
 
       State.droneLine = L.polyline(State.points, {color: COLOR}).addTo(map);
+   }
+
+   async function undo() {
+      if (State.explosionMarker) {
+        map.removeLayer(State.explosionMarker);
+        State.explosionMarker = null;
+        return;
+      }
+
+      if (State.markers.length > 0) {
+        const lastMarker = State.markers.pop();
+        if (lastMarker) map.removeLayer(lastMarker);
+      }
+   
+      if (State.points.length > 0) {
+        State.points.pop();
+      }
+
+      if (State.droneLine) {
+        map.removeLayer(State.droneLine);
+        State.droneLine = null;
+      }
+    
+      if (State.points.length > 0) {
+        State.droneLine = L.polyline(State.points, {color: COLOR}).addTo(map);
+
+      } else {
+        State.droneNum = null;
+        State.droneIcon = null;
+      }
+
+      if (State.points.length > 1) {
+         State.markers[State.markers.length-1].addTo(map);    
+      }
    }
 
     map.on('click', onMapClick);

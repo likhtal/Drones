@@ -22,7 +22,7 @@ body::before {
 	content: "";
 	position: fixed;
 	inset: 0;
-	background-image: url('img/drones.jpg');
+	background-image: url('../img/drones.jpg');
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -173,3 +173,18 @@ footer {
 #select-drones-label {
 	font-size: 14px;
 }
+.map button,
+.map select {
+  font-family: inherit;
+  font-weight: 600;
+  border: 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+  color: #062027;
+}
+#launch { background: linear-gradient(180deg, var(--accent), #66e0ff); }
+#clear  { background: rgba(255,255,255,0.06); color:#eafcff; }
+#undo   { background: transparent; color:var(--accent); border:1px solid rgba(0,212,255,0.18); }
+.map button:hover { transform: translateY(-3px); }
