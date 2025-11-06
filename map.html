@@ -32,16 +32,18 @@
     <section class="map">
        <div id="map"></div>
 
-       <button id="clear">Clear</button>
-       <button id="launch">Launch</button>
        <button id="undo">Undo</button>
+       <button id="launch">Launch</button>
+       <button id="clear">Clear</button>
 
 
        <label for="select-drones" id="select-drones-label">Choose a drone:</label>
 
        <select name="select-drones" id="select-drones" data-placeholder="Select a drone" data-dynamic-select>
-         <option value="1" data-img="img/drone-icon1.png">Drone #1</option>
-         <option value="2" data-img="img/drone-icon2.png">Drone #2</option>
+<!--
+         <option value="1" data-img="img/drone-icon1.png">Drone #1 (2000)</option>
+         ...
+-->
        </select>
 
     </section>
@@ -188,13 +190,8 @@
          // });
 
          State.droneNum = document.querySelector('.dynamic-select-option.dynamic-select-selected').getAttribute("data-value");
+         State.droneIcon = DRONES[State.droneNum];
          
-         if (State.droneNum == 2) {
-           State.droneIcon = DRONE_ICON2;
-         } else {
-           State.droneIcon = DRONE_ICON1;
-         }
-
          State.markers[State.markers.length] = L.marker(e.latlng, {icon: State.droneIcon}).addTo(map);    
 
       } else {
@@ -249,6 +246,26 @@
 
     map.on('click', onMapClick);
   </script>
+
+  <script>
+    const selectElement = document.getElementById('select-drones'); 
+
+    for (const i in DRONES) {
+
+       let drone = DRONES[i];  // whole object!
+       let name = DRONE_NAMES[i]; 
+       let limit = LIMITS[i];      // from LIMITS
+
+       console.log(drone);
+       let img = drone.options.iconUrl;
+
+       const newOption = new Option(`${name} (${limit})`, `${i}`); 
+       newOption.setAttribute('data-img', img);
+       selectElement.add(newOption); 
+    }
+
+  </script>
+
   <script src="js/dynamicSelect.js"></script>
 
 </body>
